@@ -8,17 +8,18 @@ import { View, Button } from 'react-native';
 import Colors from '../constants/Colors';
 import { logout } from '../store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserStackScreen, BalanceStackScreen } from './UserNavigator';
+import { BalanceStackScreen } from './UserNavigator';
 import { drawerOption } from './Options';
+import { AdminTabScreen } from './AdminTabNavigator';
 
 const Drawer = createDrawerNavigator();
 export const DrawerNavigator = () => {
-  // const userType = useSelector((state) => state.auth.user.type);
+  //const userType = useSelector((state) => state.auth.user.type);
 
   const dispatch = useDispatch();
   return (
     <Drawer.Navigator
-      initialRouteName='User Home'
+      initialRouteName='Admin Home'
       //screenOptions={defaultNavOptions}
       drawerType='slide'
       // overlayColor='black'
@@ -50,8 +51,8 @@ export const DrawerNavigator = () => {
       }}
     >
       <Drawer.Screen
-        name='User Home'
-        component={UserStackScreen}
+        name='Admin Home'
+        component={AdminTabScreen}
         options={{ drawerLabel: 'Orders' }}
       />
       <Drawer.Screen name='Balance' component={BalanceStackScreen} />

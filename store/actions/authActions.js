@@ -11,6 +11,7 @@ import {
 } from './Types';
 import axios from 'axios';
 import setAuthToken from '../../utils/setauthtoken';
+import { factorypost } from './actionsFactory';
 import ENV from '../../env';
 const url = ENV().url;
 
@@ -119,3 +120,13 @@ export const checkUser = () => async (dispatch) => {
     });
   }
 };
+
+//Set initial user location
+
+export const setAddress = (address) =>
+  factorypost(
+    address,
+    `${url}/api/v1/users/setAddress`,
+    'USER_LOADED',
+    'AUTH_ERROR'
+  );

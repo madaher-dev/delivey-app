@@ -6,48 +6,59 @@ import HeaderButton from '../components/UI/HeaderButton';
 import OrderDetailsScreen from '../screens/OrderDetails';
 import MapScreen from '../screens/MapScreen';
 import HomeScreen from '../screens/Home';
+import SetAddressScreen from '../screens/SetAddress';
 import AddOrderScreen from '../screens/AddOrder';
 import { defaultNavOptions } from './Options';
 import BalanceScreen from '../screens/Balance';
-
+import { useDispatch, useSelector } from 'react-redux';
 const UserStack = createStackNavigator();
 
 export const UserStackScreen = () => {
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <UserStack.Navigator screenOptions={defaultNavOptions}>
-      <UserStack.Screen
-        name='Home'
-        component={HomeScreen}
-        options={({ route, navigation }) => ({
-          title: 'Delivery app',
-          headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title='Add Order'
-                iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-                onPress={() => navigation.navigate('Add Order')}
-              />
-            </HeaderButtons>
-          ),
-          headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title='Menu'
-                iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-                onPress={() => navigation.toggleDrawer()}
-              />
-            </HeaderButtons>
-          ),
-        })}
-      />
-      <UserStack.Screen name='Add Order' component={AddOrderScreen} />
-      <UserStack.Screen name='Map' component={MapScreen} />
+      {user && user.location.coordinates.length === 0 ? (
+        <UserStack.Screen name='Set Address' component={SetAddressScreen} />
+      ) : (
+        <>
+          <UserStack.Screen
+            name='Home'
+            component={HomeScreen}
+            options={({ route, navigation }) => ({
+              title: 'Delivery app',
+              headerRight: () => (
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                  <Item
+                    title='Add Order'
+                    iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+                    onPress={() => navigation.navigate('Add Order')}
+                  />
+                </HeaderButtons>
+              ),
+              headerLeft: () => (
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                  <Item
+                    title='Menu'
+                    iconName={
+                      Platform.OS === 'android' ? 'md-menu' : 'ios-menu'
+                    }
+                    onPress={() => navigation.toggleDrawer()}
+                  />
+                </HeaderButtons>
+              ),
+            })}
+          />
+          <UserStack.Screen name='Add Order' component={AddOrderScreen} />
+          <UserStack.Screen name='Map' component={MapScreen} />
 
-      <UserStack.Screen
-        name='Order Details'
-        component={OrderDetailsScreen}
-        options={({ route }) => ({ title: route.params.title })}
-      />
+          <UserStack.Screen
+            name='Order Details'
+            component={OrderDetailsScreen}
+            options={({ route }) => ({ title: route.params.title })}
+          />
+        </>
+      )}
     </UserStack.Navigator>
   );
 };

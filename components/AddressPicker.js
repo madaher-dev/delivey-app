@@ -15,6 +15,7 @@ const AddressPicker = (props) => {
 
   const retCoordinates = (placeId) => {
     dispatch(getCoordinates(placeId));
+    //console.log('hello');
   };
   return (
     <GooglePlacesAutocomplete
