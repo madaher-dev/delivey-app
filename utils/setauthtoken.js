@@ -7,15 +7,9 @@ const storeData = async (token, expiresAt) => {
   } catch (e) {
     console.log(e);
   }
-  // try {
-  //   await AsyncStorage.setItem('userData', token);
-  // } catch (e) {
-  //   console.log('Error saving to internal storage');
-  // }
 };
 const setAuthToken = (token) => {
   if (token) {
-    //console.log(token);
     axios.defaults.headers.common['x-auth-token'] = token;
     storeData(token);
   } else {

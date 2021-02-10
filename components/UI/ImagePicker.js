@@ -7,8 +7,6 @@ import { Button } from 'react-native-paper';
 import Colors from '../../constants/Colors';
 
 const ImgPicker = (props) => {
-  //const [pickedImage, setPickedImage] = useState();
-
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
     if (result.status !== 'granted') {
@@ -34,7 +32,6 @@ const ImgPicker = (props) => {
       //base64: true,
       quality: 0.5,
     });
-    //console.log(image);
     props.setFieldValue('imageUri', image.uri);
   };
 

@@ -8,7 +8,6 @@ import { checkUser } from '../store/actions/authActions';
 
 const Startup = (props) => {
   const authError = useSelector((state) => state.auth.authError);
-  // console.log(authError);
 
   const dispatch = useDispatch();
   useEffect(() => {

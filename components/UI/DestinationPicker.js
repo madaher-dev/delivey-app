@@ -10,10 +10,7 @@ const DestinationPicker = (props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [pickedLocation, setPickedLocation] = useState();
 
-  // const mapPickedLocation = props.mapPickedLocation;
-
   const { onDestinationPicked, mapPickedLocation } = props;
-  // console.log(mapPickedLocation);
   useEffect(() => {
     if (mapPickedLocation) {
       setPickedLocation(mapPickedLocation);
@@ -22,14 +19,6 @@ const DestinationPicker = (props) => {
       getLocationHandler();
     }
   }, [mapPickedLocation]);
-
-  // Needs fixing
-  // useEffect(() => {
-  //   if (mapPickedLocation) {
-  //     setPickedLocation(mapPickedLocation);
-  //     onDestinationPicked('destination', mapPickedLocation);
-  //   }
-  // }, [mapPickedLocation, onDestinationPicked]);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);

@@ -9,13 +9,9 @@ const googleApiKey = ENV().googleApiKey;
 
 const AddressPicker = (props) => {
   const dispatch = useDispatch();
-  // console.log(props.route.params.initialLocation);
-  // const lng = props.route.params.initialLocation.ln;
-  // const lat = props.route.params.initialLocation.lat;
 
   const retCoordinates = (placeId) => {
     dispatch(getCoordinates(placeId));
-    //console.log('hello');
   };
   return (
     <GooglePlacesAutocomplete
@@ -29,9 +25,6 @@ const AddressPicker = (props) => {
         language: 'en',
       }}
       enablePoweredByContainer={false}
-      //fetchDetails={true}
-      // currentLocation={true}
-      // currentLocationLabel='Current location'
     />
   );
 };

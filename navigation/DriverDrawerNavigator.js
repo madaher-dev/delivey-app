@@ -10,16 +10,16 @@ import { logout } from '../store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { BalanceStackScreen } from './UserNavigator';
 import { drawerOption } from './Options';
-import { AdminTabNavigator } from './AdminTabNavigator';
+import { DriverTabNavigator } from './DriverTabNavigator';
 
 const Drawer = createDrawerNavigator();
-export const AdminDrawerNavigator = () => {
+export const DriverDrawerNavigator = () => {
   //const userType = useSelector((state) => state.auth.user.type);
 
   const dispatch = useDispatch();
   return (
     <Drawer.Navigator
-      initialRouteName='Admin Home'
+      initialRouteName='Driver Home'
       //screenOptions={defaultNavOptions}
       drawerType='slide'
       // overlayColor='black'
@@ -51,8 +51,8 @@ export const AdminDrawerNavigator = () => {
       }}
     >
       <Drawer.Screen
-        name='Admin Home'
-        component={AdminTabNavigator}
+        name='Driver Home'
+        component={DriverTabNavigator}
         options={{ drawerLabel: 'Orders' }}
       />
       <Drawer.Screen name='Balance' component={BalanceStackScreen} />

@@ -35,7 +35,6 @@ const MapScreen = (props) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  // console.log('1-', selectedLocation);
 
   const selectLocationHandler = (event) => {
     if (readonly) {
@@ -48,10 +47,9 @@ const MapScreen = (props) => {
   };
 
   const savePickedLocationHandler = useCallback(() => {
-    // console.log(selectedLocation);
     if (!selectedLocation) {
       // could show an alert!
-      //console.log('hello');
+
       return;
     }
     props.navigation.navigate('Add Order', {

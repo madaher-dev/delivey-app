@@ -31,7 +31,6 @@ const validationSchema = yup.object().shape({
 const AddOrder = (props) => {
   const dispatch = useDispatch();
   const addOrderHandler = (values) => {
-    // console.log(values);
     dispatch(setLoading());
     dispatch(addOrder(values));
     props.navigation.goBack();
@@ -46,10 +45,11 @@ const AddOrder = (props) => {
           initialValues={{
             title: '',
             receiver: '',
-            rePhone: '',
+            receiverPhone: '',
             imageUri: '',
             amount: '',
             destination: null,
+            description: '',
           }}
           onSubmit={addOrderHandler}
           validationSchema={validationSchema}
@@ -106,9 +106,9 @@ const AddOrder = (props) => {
 
               <Text style={styles.label}>Receiver Phone</Text>
               <TextInput
-                onChangeText={handleChange('rePhone')}
-                onBlur={handleBlur('rePhone')}
-                value={values.rePhone}
+                onChangeText={handleChange('receiverPhone')}
+                onBlur={handleBlur('receiverPhone')}
+                value={values.receiverPhone}
                 style={styles.input}
                 autoCompleteType='tel'
                 keyboardType='phone-pad'
@@ -117,16 +117,16 @@ const AddOrder = (props) => {
                 autoCapitalize='sentences'
                 dataDetectorTypes='phoneNumber'
               />
-              {errors.rePhone && (
+              {errors.receiverPhone && (
                 <Text style={{ fontSize: 10, color: 'red' }}>
-                  {errors.rePhone}
+                  {errors.receiverPhone}
                 </Text>
               )}
               <Text style={styles.label}>Note</Text>
               <TextInput
-                onChangeText={handleChange('note')}
-                onBlur={handleBlur('note')}
-                value={values.note}
+                onChangeText={handleChange('description')}
+                onBlur={handleBlur('description')}
+                value={values.description}
                 style={styles.input}
                 autoCompleteType='off'
                 keyboardType='default'

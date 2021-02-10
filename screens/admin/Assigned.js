@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Second = () => {
+const Assigned = (props) => {
   return (
     <View>
-      <Text>Second Screen</Text>
+      <Text>Assigned</Text>
     </View>
   );
 };
 
-export default Second;
+export default Assigned;
 
 const styles = StyleSheet.create({});

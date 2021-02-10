@@ -27,6 +27,7 @@ const theme = {
     disabled: 'black',
     //placeholder: 'white',
     backdrop: 'black',
+    notification: '#02A0D1',
   },
 };
 export default function App() {

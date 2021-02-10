@@ -4,39 +4,39 @@ import Colors from '../../constants/Colors';
 import { format, parseISO } from 'date-fns';
 import AvatarItem from '../AvatarItem';
 
-const OrderItem = (props) => {
+const AdminOrderItem = (props) => {
   const status = props.status;
-
+  const driver = props.driver;
+  let driverName;
+  if (driver) driverName = driver.name;
   return (
     <TouchableOpacity onPress={props.onSelect} style={styles.placeItem}>
-      <View style={styles.infoContainerRow}>
-        <View style={styles.avatar}>
-          <AvatarItem status={status} />
-          <Text style={styles.avatarText}>
-            {status === 'pending' ? 'pending' : ''}
-          </Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.title}>{props.title}</Text>
-          <Text style={styles.date}>
-            {format(parseISO(props.date), 'MM/dd/yyyy')}
-          </Text>
-        </View>
-      </View>
-      <View>
-        <Text style={styles.address}>
-          {!props.address ||
-          props.address === 'undefined' ||
-          props.address === 'null'
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.date}>
+          {format(parseISO(props.date), 'dd/MM/yyyy')}
+        </Text>
+        <Text style={{ color: Colors.primary }}>{driverName}</Text>
+        <Text style={styles.location}>
+          {!props.location ||
+          props.location === 'undefined' ||
+          props.location === 'null'
             ? null
-            : props.address}
+            : props.location}
+        </Text>
+        <Text style={styles.destination}>
+          {!props.destination ||
+          props.destination === 'undefined' ||
+          props.destination === 'null'
+            ? null
+            : props.destination}
         </Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-export default OrderItem;
+export default AdminOrderItem;
 
 const styles = StyleSheet.create({
   placeItem: {

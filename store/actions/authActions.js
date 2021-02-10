@@ -34,7 +34,7 @@ export const signup = (name, email, password) => async (dispatch) => {
       credentials,
       config
     );
-    // console.log(response.data);
+
     dispatch({
       type: SIGNUP,
       payload: response.data,
@@ -67,13 +67,11 @@ export const login = (email, password) => {
       password,
     };
     try {
-      //console.log(credentials);
       const response = await axios.post(
         `${url}/api/v1/users/login`,
         credentials,
         config
       );
-      //console.log(response.data);
 
       dispatch({
         type: LOGIN,
@@ -106,9 +104,7 @@ export const setLoading = () => ({ type: SET_LOADING });
 //Similar to loadUser but does not return error on fail
 export const checkUser = () => async (dispatch) => {
   try {
-    //console.log('hello');
     const response = await axios.get(`${url}/api/v1/users/me`);
-    // console.log(response.data);
     dispatch({
       type: USER_LOADED,
       payload: response.data,

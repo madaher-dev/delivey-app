@@ -28,7 +28,6 @@ const MyNumberFormat = (props) => {
     props.setFieldValue('amount', amount);
   };
 
-  //console.log(format(money));
   return (
     <View>
       <Text>{formated}</Text>

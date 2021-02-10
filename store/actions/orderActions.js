@@ -4,11 +4,10 @@ import {
   SET_LOADING_ORDER,
   SET_REFRESHING,
   ADD_ORDER_ERROR,
-  GET_COORDINATES,
 } from './Types';
 import axios from 'axios';
 
-import { factoryget } from './actionsFactory';
+import { factoryget, factorypatch } from './actionsFactory';
 //const factory = require('./actionsFactory');
 import ENV from '../../env';
 const url = ENV().url;
@@ -17,28 +16,57 @@ const googleApiKey = ENV().googleApiKey;
 export const getOrders = () =>
   factoryget(`${url}/api/v1/orders/myOrders`, 'GET_ORDERS', 'ORDERS_ERROR');
 
+export const getOrder = (id) =>
+  factoryget(`${url}/api/v1/orders/${id}`, 'GET_ORDER', 'GET_ORDER_ERROR');
+
+export const assignDriver = (driverId, order) =>
+  factorypatch(
+    { driver: driverId },
+    `${url}/api/v1/orders/${order}`,
+    'GET_ORDER',
+    'GET_ORDER_ERROR'
+  );
+export const declineOrder = (id) =>
+  factorypatch(
+    { status: 'declined' },
+    `${url}/api/v1/orders/${id}`,
+    'GET_ORDER',
+    'GET_ORDER_ERROR'
+  );
+export const setStatus = (id, status) =>
+  factorypatch(
+    { status },
+    `${url}/api/v1/orders/${id}`,
+    'GET_ORDER',
+    'GET_ORDER_ERROR'
+  );
+
+//set driver to null
+export const rejectOrder = (id) =>
+  factorypatch(
+    { driver: null, status: 'pending' },
+    `${url}/api/v1/orders/${id}`,
+    'GET_ORDER',
+    'GET_ORDER_ERROR'
+  );
 export const addOrder = (data) => {
   return async (dispatch, getState) => {
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
     };
-
-    //console.log(data.destination.lng);
     const fulladdress = getState().order.coordinates;
     let address;
     if (fulladdress) address = fulladdress.result.formatted_address;
-
-    //console.log(address);
     const form = new FormData();
-
     form.append('title', data.title);
     form.append('receiver', data.receiver);
-    form.append('rePhone', data.rePhone);
+    form.append('receiverPhone', data.receiverPhone);
     form.append('lng', data.destination.lng);
     form.append('lat', data.destination.lat);
     form.append('amount', data.amount);
-    form.append('destinationAddress', address);
-    //console.log(data.imageUris);
+    form.append('destinationAddress', data.address);
+    form.append('description', data.description);
+
     if (data.imageUri) {
       let uri = data.imageUri;
       let uriParts = uri.split('.');
@@ -50,14 +78,6 @@ export const addOrder = (data) => {
         type: `image/${fileType}`,
       });
     }
-
-    // // form.append('files', images);
-    // let images = data.imageUris;
-    // console.log(images);
-    // images.map((file) => {
-    //   console.log(file);
-    //   form.append('imageUris', file);
-    // });
 
     try {
       const res = await axios.post(`${url}/api/v1/orders`, form, config);

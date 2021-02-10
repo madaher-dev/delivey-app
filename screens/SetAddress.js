@@ -121,8 +121,6 @@ const SetAddress = (props) => {
       coordinates: { lat: initialLocation.lat, lng: initialLocation.lng },
       address,
     };
-
-    //console.log('fulladdress:', fulladdress);
     dispatch(setAddress(fulladdress));
     // props.navigation.navigate('Home');
   }, [initialLocation]);

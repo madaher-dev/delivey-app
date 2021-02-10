@@ -15,25 +15,19 @@ import {
   getAllOrders,
   clearErrors,
   setRefresh,
-} from '../../store/actions/adminActions';
-
+} from '../../store/actions/driverActions';
 import AdminOrderItem from '../../components/UI/AdminOrderItem';
 import Colors from '../../constants/Colors';
 
 const Home = (props) => {
   const page = props.route.params.status;
-
   const dispatch = useDispatch();
   //Erro Handler
-  const error = useSelector((state) => state.admin.error);
-  const allOrders = useSelector((state) => state.admin.allOrders);
-
-  const pendingOrders = allOrders.filter(
-    (order) => order.status === 'pending' && !order.driver
-  );
+  const error = useSelector((state) => state.driver.error);
+  const allOrders = useSelector((state) => state.driver.allOrders);
 
   const assignedOrders = allOrders.filter(
-    (order) => order.status === 'pending' && order.driver
+    (order) => order.status === 'pending'
   );
 
   const approvedOrders = allOrders.filter(
@@ -44,16 +38,19 @@ const Home = (props) => {
     (order) => order.status === 'collected'
   );
 
+  const deliveredOrders = allOrders.filter(
+    (order) => order.status === 'delivered'
+  );
   let orders;
-  if (page === 'pending') orders = pendingOrders;
-  else if (page === 'assigned') orders = assignedOrders;
+  if (page === 'pending') orders = assignedOrders;
+  else if (page === 'delivered') orders = deliveredOrders;
   else if (page === 'approved') orders = approvedOrders;
   else if (page === 'collected') orders = collectedOrders;
 
   let orderLength;
   if (orders) orderLength = orders.length;
-  const refreshing = useSelector((state) => state.admin.refreshing);
-  const loading = useSelector((state) => state.admin.loading);
+  const refreshing = useSelector((state) => state.driver.refreshing);
+  const loading = useSelector((state) => state.driver.loading);
 
   useEffect(() => {
     if (error) {
