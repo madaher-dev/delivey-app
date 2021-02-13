@@ -10,7 +10,7 @@ const initialState = {
   error: null,
   loading: null,
   allOrders: [],
-  refreshing: null,
+  refreshing: false,
 };
 
 export default (state = initialState, action) => {
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
         ...state,
         allOrders: [],
         error: action.payload,
-        refreshing: null,
+        refreshing: false,
       };
     case SET_DRIVER_REFRESHING:
       return {
@@ -34,7 +34,7 @@ export default (state = initialState, action) => {
         error: null,
         loading: null,
         refreshing: null,
-        refreshing: null,
+        refreshing: false,
       };
     case SET_LOADING_DRIVER:
       return {
@@ -46,6 +46,7 @@ export default (state = initialState, action) => {
         ...state,
         error: null,
         loading: null,
+        refreshing: false,
       };
     default:
       return state;

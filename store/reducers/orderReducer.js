@@ -13,6 +13,7 @@ import {
   ALL_ORDERS_ERROR,
   GET_ORDER_ERROR,
   GET_ORDER,
+  SET_TAB_INDEX,
 } from '../actions/Types';
 
 const initialState = {
@@ -33,14 +34,16 @@ export default (state = initialState, action) => {
         orders: action.payload.data.orders,
         error: null,
         loading: null,
-        refreshing: null,
+        refreshing: false,
       };
+
     case GET_ORDER:
       return {
         ...state,
         currentOrder: action.payload.data.data,
         error: null,
         loading: null,
+        refreshing: false,
       };
     case ADD_ORDER:
       return {
@@ -48,6 +51,7 @@ export default (state = initialState, action) => {
         orders: [action.payload.data.order, ...state.orders],
         loading: false,
         coordinates: null,
+        refreshing: false,
       };
     case ORDERS_ERROR:
     case ALL_ORDERS_ERROR:
@@ -57,13 +61,14 @@ export default (state = initialState, action) => {
         orders: null,
         error: null,
         loading: null,
-        refreshing: null,
+        refreshing: false,
         currentOrder: {},
       };
     case ADD_ORDER_ERROR:
       return {
         ...state,
         error: action.payload,
+        refreshing: false,
       };
     case SET_LOADING_ORDER:
       return {
@@ -80,6 +85,7 @@ export default (state = initialState, action) => {
         ...state,
         error: null,
         loading: false,
+        refreshing: false,
       };
     case GET_COORDINATES:
       return {
@@ -98,7 +104,7 @@ export default (state = initialState, action) => {
         coordinates: null,
         error: null,
         orders: [],
-        refreshing: null,
+        refreshing: false,
         loading: null,
       };
     case GET_ALL_ORDERS:
@@ -107,7 +113,7 @@ export default (state = initialState, action) => {
         allOrders: action.payload.data.data,
         error: null,
         loading: null,
-        refreshing: null,
+        refreshing: false,
       };
     default:
       return state;

@@ -55,8 +55,14 @@ export const addOrder = (data) => {
       headers: { 'Content-Type': 'multipart/form-data' },
     };
     const fulladdress = getState().order.coordinates;
+    console.log(fulladdress);
     let address;
     if (fulladdress) address = fulladdress.result.formatted_address;
+    //if (data.destination.lng) console.log(data.destination.lng);
+    // console.log(data.title);
+    // console.log(data.receiver);
+    // console.log(data.address);
+
     const form = new FormData();
     form.append('title', data.title);
     form.append('receiver', data.receiver);
@@ -64,7 +70,7 @@ export const addOrder = (data) => {
     form.append('lng', data.destination.lng);
     form.append('lat', data.destination.lat);
     form.append('amount', data.amount);
-    form.append('destinationAddress', data.address);
+    form.append('destinationAddress', address);
     form.append('description', data.description);
 
     if (data.imageUri) {
@@ -78,6 +84,17 @@ export const addOrder = (data) => {
         type: `image/${fileType}`,
       });
     }
+    if (data.audioUri) {
+      let uri = data.audioUri;
+      let uriParts = uri.split('.');
+      let fileType = uriParts[uriParts.length - 1];
+
+      form.append('audioUri', {
+        uri,
+        name: `audio.${fileType}`,
+        type: `audio/${fileType}`,
+      });
+    }
 
     try {
       const res = await axios.post(`${url}/api/v1/orders`, form, config);
@@ -87,7 +104,7 @@ export const addOrder = (data) => {
         payload: res.data,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err.response.data.message);
       dispatch({
         type: ADD_ORDER_ERROR,
         payload: err.response.data.message,

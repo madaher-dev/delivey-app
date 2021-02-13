@@ -12,14 +12,26 @@ const OrderItem = (props) => {
       <View style={styles.infoContainerRow}>
         <View style={styles.avatar}>
           <AvatarItem status={status} />
-          <Text style={styles.avatarText}>
-            {status === 'pending' ? 'pending' : ''}
+          <Text
+            style={
+              status === 'pending' ? styles.avatarText : styles.avatarGreen
+            }
+          >
+            {status === 'pending'
+              ? 'pending'
+              : status === 'approved'
+              ? 'approved'
+              : status === 'collected'
+              ? 'collected'
+              : status === 'delivered'
+              ? 'delivered'
+              : ''}
           </Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{props.title}</Text>
           <Text style={styles.date}>
-            {format(parseISO(props.date), 'MM/dd/yyyy')}
+            {format(parseISO(props.date), 'dd/MM/yyyy')}
           </Text>
         </View>
       </View>
@@ -93,5 +105,8 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     color: Colors.primary,
+  },
+  avatarGreen: {
+    color: 'green',
   },
 });

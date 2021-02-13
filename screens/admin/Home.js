@@ -70,10 +70,11 @@ const Home = (props) => {
     dispatch(getAllOrders());
   }, []);
   const onRefresh = useCallback(() => {
+    console.log('hello');
     dispatch(setRefresh());
     dispatch(getAllOrders());
   }, []);
-
+  console.log(refreshing);
   if (loading) {
     return (
       <View style={styles.screen}>

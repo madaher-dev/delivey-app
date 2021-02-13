@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   View,
@@ -17,6 +17,8 @@ import { TextInput } from 'react-native-paper';
 import { setLoading, addOrder } from '../store/actions/orderActions';
 import DestinationPicker from '../components/UI/DestinationPicker';
 import MyNumberFormat from '../components/UI/MyNumberFormat';
+import AudioRecorder from '../components/AudioRecorder';
+import AudioPlayer from '../components/AudioPlayer';
 
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 const validationSchema = yup.object().shape({
@@ -38,6 +40,8 @@ const AddOrder = (props) => {
   const selectedLocation = props.route.params
     ? props.route.params.pickedLocation
     : null;
+  const [audioUri, setaudioUri] = useState();
+  //console.log(audioUri);
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -47,6 +51,7 @@ const AddOrder = (props) => {
             receiver: '',
             receiverPhone: '',
             imageUri: '',
+            audioUri: '',
             amount: '',
             destination: null,
             description: '',
@@ -149,6 +154,8 @@ const AddOrder = (props) => {
                   style={styles.imagePreview}
                 />
               ) : null}
+              <AudioRecorder setFieldValue={setFieldValue} />
+              <AudioPlayer uri={audioUri} />
               <CustomButton
                 onPress={handleSubmit}
                 label='Submit'

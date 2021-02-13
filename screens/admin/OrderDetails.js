@@ -152,26 +152,28 @@ const OrderDetails = (props) => {
           <View style={styles.label}>
             <Text>Assign Driver</Text>
           </View>
-          <Picker
-            selectedValue={driver}
-            style={{
-              height: 40,
-              width: '100%',
-            }}
-            onValueChange={(itemValue, itemIndex) => setDriver(itemValue)}
-            dropdownIconColor={Colors.primary}
-            prompt='Choose Driver'
-          >
-            {drivers.map((item, index) => {
-              return (
-                <Picker.Item
-                  label={item.name}
-                  value={item._id}
-                  key={item._id}
-                />
-              );
-            })}
-          </Picker>
+          <View style={styles.picker}>
+            <Picker
+              selectedValue={driver}
+              style={{
+                height: 40,
+                width: '100%',
+              }}
+              onValueChange={(itemValue, itemIndex) => setDriver(itemValue)}
+              dropdownIconColor={Colors.primary}
+              prompt='Choose Driver'
+            >
+              {drivers.map((item, index) => {
+                return (
+                  <Picker.Item
+                    label={item.name}
+                    value={item._id}
+                    key={item._id}
+                  />
+                );
+              })}
+            </Picker>
+          </View>
 
           <View style={styles.buttonRow}>
             <CustomButton
@@ -191,29 +193,28 @@ const OrderDetails = (props) => {
       ) : null}
       <ScrollView style={{ width: '100%' }}>
         <View style={{ alignItems: 'center' }}>
+          <View style={styles.textBox}>
+            <View style={styles.text}>
+              <Text>Receiver Name: </Text>
+              <Text>{receiver}</Text>
+            </View>
+            <View style={styles.text}>
+              <Text>Receiver number: </Text>
+              <Text>{receiverPhone}</Text>
+            </View>
+          </View>
+          <View style={styles.textBox}>
+            <View style={styles.text}>
+              <Text>Amount: </Text>
+              <Text>{formatedAmount}</Text>
+            </View>
+          </View>
+
+          <View style={styles.note}>
+            <Text style={{ textAlign: 'left' }}>{description}</Text>
+          </View>
           {address || location.lat ? (
             <>
-              <View style={styles.textBox}>
-                <View style={styles.text}>
-                  <Text>Receiver Name: </Text>
-                  <Text>{receiver}</Text>
-                </View>
-                <View style={styles.text}>
-                  <Text>Receiver number: </Text>
-                  <Text>{receiverPhone}</Text>
-                </View>
-              </View>
-              <View style={styles.textBox}>
-                <View style={styles.text}>
-                  <Text>Amount: </Text>
-                  <Text>{formatedAmount}</Text>
-                </View>
-              </View>
-
-              <View style={styles.note}>
-                <Text style={{ textAlign: 'left' }}>{description}</Text>
-              </View>
-
               <View style={styles.labelCenter}>
                 <Text>Pickup Location</Text>
               </View>
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   buttonRow: {
-    flex: 1,
+    //flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -364,5 +365,9 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+  },
+  picker: {
+    width: '100%',
+    marginBottom: 100,
   },
 });

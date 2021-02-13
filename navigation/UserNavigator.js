@@ -7,6 +7,7 @@ import OrderDetailsScreen from '../screens/OrderDetails';
 import MapScreen from '../screens/MapScreen';
 import HomeScreen from '../screens/Home';
 import SetAddressScreen from '../screens/SetAddress';
+import UserHomeScreen from '../screens/UserHome';
 import AddOrderScreen from '../screens/AddOrder';
 import { defaultNavOptions } from './Options';
 import BalanceScreen from '../screens/Balance';
@@ -50,6 +51,7 @@ export const UserStackScreen = () => {
             })}
           />
           <UserStack.Screen name='Add Order' component={AddOrderScreen} />
+          <UserStack.Screen name='User Home' component={UserHomeScreen} />
           <UserStack.Screen name='Map' component={MapScreen} />
 
           <UserStack.Screen

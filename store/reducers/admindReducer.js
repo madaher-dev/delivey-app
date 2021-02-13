@@ -13,7 +13,7 @@ const initialState = {
   error: null,
   loading: null,
   allOrders: [],
-  refreshing: null,
+  refreshing: false,
 };
 
 export default (state = initialState, action) => {
@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
         allUsers: action.payload.data.data,
         error: null,
         loading: null,
-        refreshing: null,
+        refreshing: false,
       };
     case ALL_ORDERS_ERROR:
     case Get_ALL_USERS_ERROR:
@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
         allUsers: [],
         allOrders: [],
         error: action.payload,
-        refreshing: null,
+        refreshing: false,
       };
     case SET_ADMIN_REFRESHING:
       return {
@@ -46,8 +46,7 @@ export default (state = initialState, action) => {
         allOrders: action.payload.data.data,
         error: null,
         loading: null,
-        refreshing: null,
-        refreshing: null,
+        refreshing: false,
       };
     case SET_LOADING_ADMIN:
       return {
@@ -59,6 +58,7 @@ export default (state = initialState, action) => {
         ...state,
         error: null,
         loading: null,
+        refreshing: false,
       };
     default:
       return state;

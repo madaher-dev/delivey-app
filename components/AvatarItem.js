@@ -5,7 +5,17 @@ const AvatarItem = (props) => {
   return (
     <Avatar.Icon
       size={64}
-      icon={props.status === 'pending' ? 'account-clock-outline' : ''}
+      icon={
+        props.status === 'pending'
+          ? 'account-clock-outline'
+          : props.status === 'approved'
+          ? 'check-decagram'
+          : props.status === 'collected'
+          ? 'bike-fast'
+          : props.status === 'delivered'
+          ? 'archive'
+          : ''
+      }
       color='white'
       //style={{ backgroundColor: 'red' }}
     />
