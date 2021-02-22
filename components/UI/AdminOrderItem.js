@@ -13,10 +13,19 @@ const AdminOrderItem = (props) => {
     <TouchableOpacity onPress={props.onSelect} style={styles.placeItem}>
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{props.title}</Text>
+
         <Text style={styles.date}>
           {format(parseISO(props.date), 'dd/MM/yyyy')}
         </Text>
-        <Text style={{ color: Colors.primary }}>{driverName}</Text>
+
+        {props.long && (
+          <Text style={{ color: Colors.primary }}>Long Trip!</Text>
+        )}
+
+        <View style={styles.infoContainerRow}>
+          <Text style={{ color: Colors.primary }}> {driverName} </Text>
+          <Text style={{ color: Colors.accent }}> {props.user} </Text>
+        </View>
         <Text style={styles.location}>
           {!props.location ||
           props.location === 'undefined' ||

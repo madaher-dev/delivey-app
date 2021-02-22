@@ -17,13 +17,16 @@ import {
   getOrder,
   setLoading,
   declineOrder,
+  setStatus,
 } from '../../store/actions/orderActions';
 import { Picker } from '@react-native-picker/picker';
 import CustomButton from '../../components/UI/CustomButton';
 import Colors from '../../constants/Colors';
 import MapPreview from '../../components/UI/MapPreview';
+import AudioSlider from '../../components/AudioPlayer/AudioSlider';
 import { createOpenLink } from 'react-native-open-maps';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { TextInput, Checkbox } from 'react-native-paper';
 import 'intl/locale-data/jsonp/en';
 import ENV from '../../env';
 
@@ -40,7 +43,7 @@ const OrderDetails = (props) => {
     new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'LBP',
-      maximumSignificantDigits: 3,
+      maximumSignificantDigits: 6,
     }).format(value);
 
   const dispatch = useDispatch();
@@ -59,7 +62,20 @@ const OrderDetails = (props) => {
     destinationLocation,
     startLocation,
     description,
+    longTrip,
+    audioUri,
   } = order;
+  const myId = useSelector((state) => state.auth.user._id);
+
+  const [newAmount, setNewAmount] = useState('');
+  const [newlongTrip, setLongTrip] = useState(false);
+  useEffect(() => {
+    let textAmount = '';
+    if (amount) textAmount = amount.toString();
+    setLongTrip(longTrip);
+    setNewAmount(textAmount);
+  }, [amount, longTrip]);
+
   const formatedAmount = formatNum(amount);
   let location = {},
     address,
@@ -103,7 +119,7 @@ const OrderDetails = (props) => {
   //console.log(modal);
   const travelType = 'drive';
 
-  const [driver, setDriver] = useState();
+  const [driver, setDriver] = useState(myId);
   useEffect(() => {
     if (order.driver) setDriver(order.driver);
   }, [order.driver]);
@@ -125,8 +141,14 @@ const OrderDetails = (props) => {
   }, []);
 
   const handleAssign = () => {
-    dispatch(setLoading());
-    dispatch(assignDriver(driver, orderId));
+    if (driver === myId) {
+      dispatch(setLoading());
+      dispatch(assignDriver(driver, newAmount, newlongTrip, orderId));
+      dispatch(setStatus(orderId, 'approved'));
+    } else {
+      dispatch(setLoading());
+      dispatch(assignDriver(driver, newAmount, newlongTrip, orderId));
+    }
     props.navigation.reset({
       index: 0,
       routes: [{ name: 'Home' }],
@@ -152,29 +174,45 @@ const OrderDetails = (props) => {
           <View style={styles.label}>
             <Text>Assign Driver</Text>
           </View>
-          <View style={styles.picker}>
-            <Picker
-              selectedValue={driver}
-              style={{
-                height: 40,
-                width: '100%',
-              }}
-              onValueChange={(itemValue, itemIndex) => setDriver(itemValue)}
-              dropdownIconColor={Colors.primary}
-              prompt='Choose Driver'
-            >
-              {drivers.map((item, index) => {
-                return (
-                  <Picker.Item
-                    label={item.name}
-                    value={item._id}
-                    key={item._id}
-                  />
-                );
-              })}
-            </Picker>
-          </View>
 
+          <Picker
+            selectedValue={driver}
+            style={{
+              height: Platform.OS === 'ios' ? 80 : 44,
+              width: '100%',
+            }}
+            itemStyle={{ height: 80 }}
+            onValueChange={(itemValue, itemIndex) => setDriver(itemValue)}
+            dropdownIconColor={Colors.primary}
+            prompt='Choose Driver'
+          >
+            {drivers.map((item, index) => {
+              return (
+                <Picker.Item
+                  label={item.name}
+                  value={item._id}
+                  key={item._id}
+                />
+              );
+            })}
+          </Picker>
+          <View style={styles.amountRow}>
+            <Text>Amount</Text>
+            <TextInput
+              onChangeText={(text) => setNewAmount(text)}
+              value={newAmount}
+              defaultValue={newAmount}
+              style={styles.amountInput}
+            />
+            <Text>Long Trip?</Text>
+            <Checkbox
+              status={newlongTrip ? 'checked' : 'unchecked'}
+              onPress={() => {
+                setLongTrip(!newlongTrip);
+              }}
+              color={Colors.primary}
+            />
+          </View>
           <View style={styles.buttonRow}>
             <CustomButton
               onPress={handleDecline}
@@ -213,6 +251,14 @@ const OrderDetails = (props) => {
           <View style={styles.note}>
             <Text style={{ textAlign: 'left' }}>{description}</Text>
           </View>
+          {audioUri && (
+            <View style={styles.audio}>
+              <AudioSlider
+                audio={`${url}/static/audio/orders/${audioUri}`}
+                type='uri'
+              />
+            </View>
+          )}
           {address || location.lat ? (
             <>
               <View style={styles.labelCenter}>
@@ -236,6 +282,7 @@ const OrderDetails = (props) => {
               />
             </>
           ) : null}
+
           {destinationAddr || destination.lat ? (
             <>
               <View style={{ ...styles.labelCenter, marginTop: 20 }}>
@@ -368,6 +415,21 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: '100%',
-    marginBottom: 100,
+    marginBottom: Platform.OS === 'ios' ? 100 : 0,
+  },
+  amountRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    paddingHorizontal: 10,
+  },
+  amountInput: {
+    flex: 1,
+    paddingBottom: 0,
+    height: 30,
+  },
+  audio: {
+    width: '60%',
   },
 });

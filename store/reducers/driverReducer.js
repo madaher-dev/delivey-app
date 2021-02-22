@@ -4,6 +4,8 @@ import {
   SET_LOADING_DRIVER,
   SET_DRIVER_REFRESHING,
   CLEAR_ERRORS,
+  ADD_TRANACTION_FAIL,
+  ADD_TRANACTION,
 } from '../actions/Types';
 
 const initialState = {
@@ -16,6 +18,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case DRIVER_ORDERS_ERROR:
+    case ADD_TRANACTION_FAIL:
       return {
         ...state,
         allOrders: [],

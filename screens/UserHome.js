@@ -37,7 +37,8 @@ const UserHome = (props) => {
 
   let state;
   if (props.index === 0) state = 'pending';
-  else state = 'other';
+  else if (props.index === 1) state = 'active';
+  else state = 'delivered';
   //Fileter State
 
   let filteredOrders;
@@ -87,6 +88,8 @@ const UserHome = (props) => {
             // }
             //address={itemData.item.destinationLocation}
             address={itemData.item.destinationLocation.address}
+            long={itemData.item.longTrip}
+            driver={itemData.item.driver && itemData.item.driver.name}
             date={itemData.item.createdAt}
             status={itemData.item.status}
             onSelect={() => {

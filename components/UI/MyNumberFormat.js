@@ -18,7 +18,7 @@ const MyNumberFormat = (props) => {
     new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'LBP',
-      maximumSignificantDigits: 3,
+      maximumSignificantDigits: 6,
     }).format(value);
 
   const format = (amount) => {

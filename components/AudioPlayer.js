@@ -7,19 +7,24 @@ export default function AudioPlayer(props) {
   // console.log(props.uri);
 
   async function playSound() {
-    console.log('Loading Sound');
+    //console.log('Loading Sound');
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      playsInSilentModeIOS: false,
+    });
     const { sound } = await Audio.Sound.createAsync({ uri: props.uri });
+
     setSound(sound);
 
-    console.log('Playing Sound');
+    //console.log('Playing Sound');
     await sound.playAsync();
-    console.log('Finished Playing');
+    //console.log('Finished Playing');
   }
 
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound');
+          //console.log('Unloading Sound');
           sound.unloadAsync();
         }
       : undefined;

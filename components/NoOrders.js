@@ -24,8 +24,8 @@ const NoOrders = (props) => {
         >
           {props.status}
         </Text>{' '}
-        Orders! Click on the + icon in the Header to start a new Order or reset
-        your filters to see other orders.
+        Orders! Click on the + icon in the Header to start a new Order or switch
+        the tabs to see other orders.
       </Text>
       <Button
         color={Colors.primary}

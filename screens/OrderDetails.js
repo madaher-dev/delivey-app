@@ -20,6 +20,7 @@ import Colors from '../constants/Colors';
 import MapPreview from '../components/UI/MapPreview';
 import { createOpenLink } from 'react-native-open-maps';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import AudioSlider from '../components/AudioPlayer/AudioSlider';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import ENV from '../env';
@@ -38,7 +39,7 @@ const OrderDetails = (props) => {
     new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'LBP',
-      maximumSignificantDigits: 3,
+      maximumSignificantDigits: 6,
     }).format(value);
 
   const dispatch = useDispatch();
@@ -53,6 +54,8 @@ const OrderDetails = (props) => {
     destinationLocation,
     startLocation,
     description,
+    longTrip,
+    audioUri,
   } = order;
   const formatedAmount = formatNum(amount);
   //const formatedAmount = amount;
@@ -107,6 +110,9 @@ const OrderDetails = (props) => {
       ]);
     }
   }, [error]);
+  let totalAmount = parseInt(amount, 10) + 5000;
+  if (longTrip) totalAmount = parseInt(amount, 10) + 7500;
+  const formatedTotalAmount = formatNum(totalAmount);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textBox}>
@@ -122,10 +128,26 @@ const OrderDetails = (props) => {
         <Text>Amount: </Text>
         <Text>{formatedAmount}</Text>
       </View>
-
+      <View style={styles.textBox}>
+        <Text>Delivery Charge: </Text>
+        <Text>{!longTrip ? 'LBP5,000' : 'LBP7,500'}</Text>
+      </View>
+      <View style={styles.textBox}>
+        <Text>Total: </Text>
+        <Text>{formatedTotalAmount}</Text>
+      </View>
       <View style={styles.note}>
         <Text style={{ textAlign: 'left' }}>{description}</Text>
       </View>
+      {audioUri && (
+        <View style={styles.audio}>
+          <AudioSlider
+            audio={`${url}/static/audio/orders/${audioUri}`}
+            type='uri'
+          />
+        </View>
+      )}
+
       {destinationAddr || destination.lat ? (
         <>
           <View style={{ ...styles.labelCenter, marginTop: 20 }}>
@@ -226,5 +248,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingHorizontal: 10,
+  },
+  audio: {
+    width: '60%',
   },
 });

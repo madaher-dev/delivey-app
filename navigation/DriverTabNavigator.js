@@ -61,7 +61,11 @@ export const DriverTabNavigator = () => {
           tabBarLabel: 'Approved',
           tabBarBadge: approved,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='pen' color={color} size={26} />
+            <MaterialCommunityIcons
+              name='check-decagram'
+              color={color}
+              size={26}
+            />
           ),
         }}
       />
@@ -73,7 +77,7 @@ export const DriverTabNavigator = () => {
           tabBarLabel: 'Collected',
           tabBarBadge: collected,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='pen' color={color} size={26} />
+            <MaterialCommunityIcons name='bike-fast' color={color} size={26} />
           ),
         }}
       />
@@ -85,7 +89,7 @@ export const DriverTabNavigator = () => {
           tabBarLabel: 'Delivered',
           tabBarBadge: delivered,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='pen' color={color} size={26} />
+            <MaterialCommunityIcons name='trophy' color={color} size={26} />
           ),
         }}
       />

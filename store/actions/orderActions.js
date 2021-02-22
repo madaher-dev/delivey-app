@@ -19,9 +19,9 @@ export const getOrders = () =>
 export const getOrder = (id) =>
   factoryget(`${url}/api/v1/orders/${id}`, 'GET_ORDER', 'GET_ORDER_ERROR');
 
-export const assignDriver = (driverId, order) =>
+export const assignDriver = (driverId, amount, longTrip, order) =>
   factorypatch(
-    { driver: driverId },
+    { driver: driverId, amount, longTrip },
     `${url}/api/v1/orders/${order}`,
     'GET_ORDER',
     'GET_ORDER_ERROR'
@@ -54,8 +54,10 @@ export const addOrder = (data) => {
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
     };
+
     const fulladdress = getState().order.coordinates;
-    console.log(fulladdress);
+    const lng = data.destination ? data.destination.lng : undefined;
+    const lat = data.destination ? data.destination.lat : undefined;
     let address;
     if (fulladdress) address = fulladdress.result.formatted_address;
     //if (data.destination.lng) console.log(data.destination.lng);
@@ -67,8 +69,8 @@ export const addOrder = (data) => {
     form.append('title', data.title);
     form.append('receiver', data.receiver);
     form.append('receiverPhone', data.receiverPhone);
-    form.append('lng', data.destination.lng);
-    form.append('lat', data.destination.lat);
+    form.append('lng', lng);
+    form.append('lat', lat);
     form.append('amount', data.amount);
     form.append('destinationAddress', address);
     form.append('description', data.description);
@@ -122,6 +124,21 @@ export const getCoordinates = (place) =>
     'GET_COORDINATES_ERROR'
   );
 
+//Get Transactions
+
+export const getMyTransactions = () =>
+  factoryget(
+    `${url}/api/v1/tranactions/my`,
+    'GET_MY_TRANSACTIONS',
+    'GET_ALL_TRANSACTIONS_FAIL'
+  );
+
+export const getAllTransactions = () =>
+  factoryget(
+    `${url}/api/v1/tranactions`,
+    'GET_ALL_TRANSACTIONS',
+    'GET_ALL_TRANSACTIONS_FAIL'
+  );
 // Clear Errors
 export const clearErrors = () => ({ type: CLEAR_ERRORS });
 

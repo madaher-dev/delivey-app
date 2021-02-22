@@ -4,7 +4,7 @@ import {
   CLEAR_ERRORS,
 } from './Types';
 
-import { factoryget } from './actionsFactory';
+import { factoryget, factorypost } from './actionsFactory';
 //const factory = require('./actionsFactory');
 import ENV from '../../env';
 const url = ENV().url;
@@ -16,6 +16,14 @@ export const getAllOrders = () =>
     'DRIVER_ORDERS_ERROR'
   );
 
+//Add transactions
+export const addTransactions = (orderId) =>
+  factorypost(
+    { orderId },
+    `${url}/api/v1/tranactions`,
+    'ADD_TRANACTION',
+    'ADD_TRANACTION_FAIL'
+  );
 // Clear Errors
 export const clearErrors = () => ({ type: CLEAR_ERRORS });
 

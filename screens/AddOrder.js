@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Colors from '../constants/Colors';
 import CustomButton from '../components/UI/CustomButton';
 import { Formik } from 'formik';
@@ -18,30 +18,30 @@ import { setLoading, addOrder } from '../store/actions/orderActions';
 import DestinationPicker from '../components/UI/DestinationPicker';
 import MyNumberFormat from '../components/UI/MyNumberFormat';
 import AudioRecorder from '../components/AudioRecorder';
-import AudioPlayer from '../components/AudioPlayer';
+//import AudioPlayer from '../components/AudioPlayer';
+import AudioSlider from '../components/AudioPlayer/AudioSlider';
 
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 const validationSchema = yup.object().shape({
-  title: yup
-    .string()
-    .min(8, ({ min }) => `Title must be at least ${min} characters`)
-    .required('Title is required'),
+  // title: yup
+  //   .string()
+  //   .min(8, ({ min }) => `Title must be at least ${min} characters`)
+  //   .required('Title is required'),
   rePhone: yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   //destination: yup.object().required('Please choose a destination'),
 });
 
 const AddOrder = (props) => {
   const dispatch = useDispatch();
+
   const addOrderHandler = (values) => {
     dispatch(setLoading());
-    dispatch(addOrder(values));
-    props.navigation.goBack();
+    dispatch(addOrder(values)).then(props.navigation.goBack());
   };
   const selectedLocation = props.route.params
     ? props.route.params.pickedLocation
     : null;
-  const [audioUri, setaudioUri] = useState();
-  //console.log(audioUri);
+
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -68,11 +68,7 @@ const AddOrder = (props) => {
             errors,
             isValid,
           }) => (
-            <KeyboardAvoidingView
-              style={styles.form}
-              behavior='padding'
-              keyboardVerticalOffset={10}
-            >
+            <View style={styles.form}>
               <Text style={styles.label}>Title</Text>
               <TextInput
                 onChangeText={handleChange('title')}
@@ -85,11 +81,6 @@ const AddOrder = (props) => {
                 textContentType='none'
                 autoCapitalize='words'
               />
-              {errors.title && (
-                <Text style={{ fontSize: 10, color: 'red' }}>
-                  {errors.title}
-                </Text>
-              )}
 
               <Text style={styles.label}>Receiver</Text>
               <TextInput
@@ -155,7 +146,10 @@ const AddOrder = (props) => {
                 />
               ) : null}
               <AudioRecorder setFieldValue={setFieldValue} />
-              <AudioPlayer uri={audioUri} />
+              {values.audioUri ? (
+                <AudioSlider audio={values.audioUri} type='uri' />
+              ) : null}
+
               <CustomButton
                 onPress={handleSubmit}
                 label='Submit'
@@ -173,7 +167,7 @@ const AddOrder = (props) => {
                 color={Colors.accent}
                 style={styles.button}
               />
-            </KeyboardAvoidingView>
+            </View>
           )}
         </Formik>
       </View>
@@ -197,6 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingVertical: 4,
     paddingHorizontal: 2,
+    fontSize: 14,
   },
   button: {
     marginTop: 16,

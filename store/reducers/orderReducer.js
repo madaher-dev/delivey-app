@@ -13,7 +13,9 @@ import {
   ALL_ORDERS_ERROR,
   GET_ORDER_ERROR,
   GET_ORDER,
-  SET_TAB_INDEX,
+  GET_ALL_TRANSACTIONS_FAIL,
+  GET_ALL_TRANSACTIONS,
+  GET_MY_TRANSACTIONS,
 } from '../actions/Types';
 
 const initialState = {
@@ -24,6 +26,7 @@ const initialState = {
   coordinates: null,
   allOrders: [],
   currentOrder: {},
+  transactions: [],
 };
 
 export default (state = initialState, action) => {
@@ -36,7 +39,22 @@ export default (state = initialState, action) => {
         loading: null,
         refreshing: false,
       };
-
+    case GET_MY_TRANSACTIONS:
+      return {
+        ...state,
+        transactions: action.payload.data.transactions,
+        error: null,
+        loading: null,
+        refreshing: false,
+      };
+    case GET_ALL_TRANSACTIONS:
+      return {
+        ...state,
+        transactions: action.payload.data.data,
+        error: null,
+        loading: null,
+        refreshing: false,
+      };
     case GET_ORDER:
       return {
         ...state,
@@ -56,6 +74,7 @@ export default (state = initialState, action) => {
     case ORDERS_ERROR:
     case ALL_ORDERS_ERROR:
     case GET_ORDER_ERROR:
+    case GET_ALL_TRANSACTIONS_FAIL:
       return {
         ...state,
         orders: null,
@@ -106,6 +125,7 @@ export default (state = initialState, action) => {
         orders: [],
         refreshing: false,
         loading: null,
+        transactions: [],
       };
     case GET_ALL_ORDERS:
       return {

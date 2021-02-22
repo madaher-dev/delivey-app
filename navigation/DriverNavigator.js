@@ -28,16 +28,8 @@ export const DriverNavigator = ({ route }) => {
             : null
         }
         options={({ route, navigation }) => ({
-          title: 'Delivery app',
-          headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title='Add Order'
-                iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-                onPress={() => navigation.navigate('Add Order')}
-              />
-            </HeaderButtons>
-          ),
+          title: 'My Orders',
+
           headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
               <Item

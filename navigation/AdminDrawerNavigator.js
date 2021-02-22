@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BalanceStackScreen } from './UserNavigator';
 import { drawerOption } from './Options';
 import { AdminTabNavigator } from './AdminTabNavigator';
+import { DriverTabNavigator } from './DriverTabNavigator';
 
 const Drawer = createDrawerNavigator();
 export const AdminDrawerNavigator = () => {
@@ -55,6 +56,7 @@ export const AdminDrawerNavigator = () => {
         component={AdminTabNavigator}
         options={{ drawerLabel: 'Orders' }}
       />
+      <Drawer.Screen name='My Orders' component={DriverTabNavigator} />
       <Drawer.Screen name='Balance' component={BalanceStackScreen} />
     </Drawer.Navigator>
   );

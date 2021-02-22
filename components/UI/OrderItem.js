@@ -33,16 +33,24 @@ const OrderItem = (props) => {
           <Text style={styles.date}>
             {format(parseISO(props.date), 'dd/MM/yyyy')}
           </Text>
+          {props.long && (
+            <Text style={{ ...styles.details, color: Colors.primary }}>
+              Long Trip!
+            </Text>
+          )}
+          {props.driver && (
+            <Text style={{ ...styles.details, color: Colors.accent }}>
+              {props.driver}
+            </Text>
+          )}
         </View>
       </View>
       <View>
-        <Text style={styles.address}>
-          {!props.address ||
-          props.address === 'undefined' ||
-          props.address === 'null'
-            ? null
-            : props.address}
-        </Text>
+        {!props.address ||
+        props.address === 'undefined' ||
+        props.address === 'null' ? null : (
+          <Text style={styles.address}>{props.address}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -86,6 +94,11 @@ const styles = StyleSheet.create({
   title: {
     color: 'black',
     fontSize: 24,
+    marginBottom: 5,
+  },
+  details: {
+    color: 'black',
+    fontSize: 14,
     marginBottom: 5,
   },
   date: {

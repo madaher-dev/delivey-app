@@ -64,17 +64,16 @@ const Home = (props) => {
   }, [error]);
 
   //Fetch Data on Load and Refresh
-
   useEffect(() => {
     dispatch(setLoading());
     dispatch(getAllOrders());
   }, []);
+
   const onRefresh = useCallback(() => {
-    console.log('hello');
     dispatch(setRefresh());
     dispatch(getAllOrders());
   }, []);
-  console.log(refreshing);
+
   if (loading) {
     return (
       <View style={styles.screen}>
@@ -100,6 +99,7 @@ const Home = (props) => {
         renderItem={(itemData) => (
           <AdminOrderItem
             title={itemData.item.title}
+            user={itemData.item.user.name}
             driver={itemData.item.driver}
             destination={itemData.item.destinationLocation.address}
             location={itemData.item.startLocation.address}

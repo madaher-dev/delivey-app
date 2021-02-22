@@ -96,10 +96,12 @@ const Home = (props) => {
         renderItem={(itemData) => (
           <AdminOrderItem
             title={itemData.item.title}
+            user={itemData.item.user.name}
             driver={itemData.item.driver}
             destination={itemData.item.destinationLocation.address}
             location={itemData.item.startLocation.address}
             date={itemData.item.createdAt}
+            long={itemData.item.longTrip}
             status={itemData.item.status}
             onSelect={() => {
               props.navigation.navigate('Order Details', {

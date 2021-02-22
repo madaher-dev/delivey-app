@@ -11,7 +11,9 @@ import UserHomeScreen from '../screens/UserHome';
 import AddOrderScreen from '../screens/AddOrder';
 import { defaultNavOptions } from './Options';
 import BalanceScreen from '../screens/Balance';
-import { useDispatch, useSelector } from 'react-redux';
+import AddTransactionScreen from '../screens/admin/AddTransaction';
+import AdminBalanceScreen from '../screens/admin/AdminBalance';
+import { useSelector } from 'react-redux';
 const UserStack = createStackNavigator();
 
 export const UserStackScreen = () => {
@@ -68,11 +70,13 @@ export const UserStackScreen = () => {
 const BalanceStack = createStackNavigator();
 
 export const BalanceStackScreen = () => {
+  const user = useSelector((state) => state.auth.user);
+  const selected = useSelector((state) => state.admin.selected);
   return (
     <BalanceStack.Navigator screenOptions={defaultNavOptions}>
       <BalanceStack.Screen
         name='Balance'
-        component={BalanceScreen}
+        component={user.role === 'admin' ? AdminBalanceScreen : BalanceScreen}
         options={({ route, navigation }) => ({
           title: 'Balance',
 
@@ -85,7 +89,27 @@ export const BalanceStackScreen = () => {
               />
             </HeaderButtons>
           ),
+          headerRight: () =>
+            user.role === 'admin' &&
+            selected && (
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  title='Add Transaction'
+                  iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+                  onPress={() =>
+                    navigation.navigate('Add Transaction', {
+                      name: selected.name,
+                      id: selected._id,
+                    })
+                  }
+                />
+              </HeaderButtons>
+            ),
         })}
+      />
+      <UserStack.Screen
+        name='Add Transaction'
+        component={AddTransactionScreen}
       />
     </BalanceStack.Navigator>
   );

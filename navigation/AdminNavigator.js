@@ -6,6 +6,8 @@ import OrderDetailsScreen from '../screens/admin/OrderDetails';
 import { defaultNavOptions } from './Options';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/UI/HeaderButton';
+import AddOrderScreen from '../screens/AddOrder';
+import MapScreen from '../screens/MapScreen';
 
 const AdminHomeStack = createStackNavigator();
 export const AdminNavigator = ({ route }) => {
@@ -32,7 +34,7 @@ export const AdminNavigator = ({ route }) => {
             : null
         }
         options={({ route, navigation }) => ({
-          title: 'Delivery app',
+          title: 'تبع الديلفري',
 
           headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
@@ -61,6 +63,8 @@ export const AdminNavigator = ({ route }) => {
           title: route.params.title,
         })}
       />
+      <AdminHomeStack.Screen name='Add Order' component={AddOrderScreen} />
+      <AdminHomeStack.Screen name='Map' component={MapScreen} />
     </AdminHomeStack.Navigator>
   );
 };

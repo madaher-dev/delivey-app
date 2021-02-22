@@ -17,8 +17,9 @@ import {
   setLoading,
   rejectOrder,
 } from '../../store/actions/orderActions';
-
+import { addTransactions } from '../../store/actions/driverActions';
 import CustomButton from '../../components/UI/CustomButton';
+import AudioSlider from '../../components/AudioPlayer/AudioSlider';
 import Colors from '../../constants/Colors';
 import MapPreview from '../../components/UI/MapPreview';
 import { createOpenLink } from 'react-native-open-maps';
@@ -39,7 +40,7 @@ const OrderDetails = (props) => {
     new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'LBP',
-      maximumSignificantDigits: 3,
+      maximumSignificantDigits: 6,
     }).format(value);
 
   const dispatch = useDispatch();
@@ -58,6 +59,8 @@ const OrderDetails = (props) => {
     destinationLocation,
     startLocation,
     description,
+    longTrip,
+    audioUri,
   } = order;
   const formatedAmount = formatNum(amount);
   let location = {},
@@ -143,6 +146,7 @@ const OrderDetails = (props) => {
   const handleDeliver = () => {
     dispatch(setLoading());
     dispatch(setStatus(orderId, 'delivered'));
+    dispatch(addTransactions(orderId));
     props.navigation.reset({
       index: 0,
       routes: [{ name: 'Delivered', params: { status: 'delivered' } }],
@@ -156,7 +160,9 @@ const OrderDetails = (props) => {
       routes: [{ name: 'Home', params: { status: 'pending' } }],
     });
   };
-
+  let totalAmount = parseInt(amount, 10) + 5000;
+  if (longTrip) totalAmount = parseInt(amount, 10) + 7500;
+  const formatedTotalAmount = formatNum(totalAmount);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleRow}>
@@ -215,12 +221,26 @@ const OrderDetails = (props) => {
                   <Text>Amount: </Text>
                   <Text>{formatedAmount}</Text>
                 </View>
+                <View style={styles.text}>
+                  <Text>Delivery Charge: </Text>
+                  <Text>{!longTrip ? 'LBP5,000' : 'LBP7,500'}</Text>
+                </View>
               </View>
-
+              <View style={styles.text}>
+                <Text>Total: </Text>
+                <Text>{formatedTotalAmount}</Text>
+              </View>
               <View style={styles.note}>
                 <Text style={{ textAlign: 'left' }}>{description}</Text>
               </View>
-
+              {audioUri && (
+                <View style={styles.audio}>
+                  <AudioSlider
+                    audio={`${url}/static/audio/orders/${audioUri}`}
+                    type='uri'
+                  />
+                </View>
+              )}
               <View style={styles.labelCenter}>
                 <Text>Pickup Location</Text>
               </View>
@@ -371,5 +391,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+  },
+  audio: {
+    width: '60%',
   },
 });
